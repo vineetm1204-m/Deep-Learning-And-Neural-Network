@@ -27,7 +27,7 @@ UNIVERSITY = "Amity University, Gwalior"
 # File types to scan
 NOTEBOOK_EXTS = {".ipynb"}
 SCRIPT_EXTS   = {".py"}
-IGNORE_DIRS   = {".git", ".github", "__pycache__", "node_modules", ".ipynb_checkpoints"}
+IGNORE_DIRS   = {".git", ".github", ".venv", "__pycache__", "node_modules", ".ipynb_checkpoints"}
 IGNORE_FILES  = {"generate_readme.py", "README.md"}
 
 # ── HELPERS ───────────────────────────────────────────────────────────────────
