@@ -38,9 +38,24 @@
 
 ### ▶️ Open in Google Colab
 
-[![Alzheimer Dataset Used](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) `alzheimer-dataset-used.ipynb`
-[![Forward Propogation Neural Network And Deep Learning](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) `forward-propogation Neural Network and Deep Learning.ipynb`
-
+<table>
+  <tr>
+    <td>
+      <a href="https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+      </a>
+    </td>
+    <td><code>alzheimer-dataset-used.ipynb</code></td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+      </a>
+    </td>
+    <td><code>forward-propogation Neural Network and Deep Learning.ipynb</code></td>
+  </tr>
+</table>
 ---
 
 ## 🔬 Concepts Covered
