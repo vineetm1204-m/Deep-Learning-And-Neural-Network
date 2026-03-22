@@ -31,32 +31,10 @@
 
 ## 📓 Notebooks
 
-| # | Notebook | Description | Tags | Last Updated |
-|---|----------|-------------|------|-------------|
-| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator import warnings # Sup… | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 2 days ago |
-| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | `forward-propagation` `deep-learning` `neural-network` `numpy` | 2 days ago |
-
-### ▶️ Open in Google Colab
-
-<table>
-  <tr>
-    <td>
-      <a href="https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb">
-        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-      </a>
-    </td>
-    <td><code>alzheimer-dataset-used.ipynb</code></td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb">
-        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-      </a>
-    </td>
-    <td><code>forward-propogation Neural Network and Deep Learning.ipynb</code></td>
-  </tr>
-</table>
----
+| # | Notebook | Open | Description | Tags | Last Updated |
+|---|----------|------|-------------|------|-------------|
+| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator...` | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 2 days ago |
+| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | `forward-propagation` `deep-learning` `neural-network` `numpy` | 2 days ago |
 
 ## 🔬 Concepts Covered
 
