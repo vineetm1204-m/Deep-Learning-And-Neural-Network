@@ -1,0 +1,47 @@
+name: 🤖 Auto-Update README
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.ipynb"        # Any new/edited notebook
+      - "**.py"           # Any new/edited Python script
+      - "generate_readme.py"
+  workflow_dispatch:      # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write         # Needed to commit back the updated README
+
+jobs:
+  update-readme:
+    name: Regenerate README.md
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the full git history (needed for git log dates)
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Set up Python
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3. Run the generator script
+      - name: 📝 Generate README
+        run: python generate_readme.py
+
+      # 4. Commit & push only if README actually changed
+      - name: 🚀 Commit & push updated README
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(auto): update README — ${{ github.event.head_commit.message }}"
+          file_pattern: README.md
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          skip_dirty_check: false       # Skip commit if no changes
+          skip_fetch: false
