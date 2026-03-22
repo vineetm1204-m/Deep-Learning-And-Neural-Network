@@ -161,7 +161,7 @@ Deep-Learning-And-Neural-Network/
 <b>Vineet Mittal</b><br>
 <sub>BTech CSE · Amity University, Gwalior</sub><br><br>
 <a href="https://github.com/vineetm1204-m">
-<img src="https://img.shields.io/badge/GitHub-vineetm1204-m-181717?style=flat-square&logo=github" />
+<img src="https://img.shields.io/badge/GitHub-vineetm1204--m-181717?style=flat-square&logo=github&logoColor=white" />
 </a>
 </td></tr></table>
 
