@@ -247,7 +247,10 @@ def build_readme(data: dict) -> str:
         ]
         for i, nb in enumerate(notebooks, 1):
             tags_str = " ".join(f"`{t}`" for t in nb["tags"]) if nb["tags"] else "—"
-            desc = nb["desc"].replace("|", "\\|")[:90] + ("…" if len(nb["desc"]) > 90 else "")
+            raw_desc = nb["desc"] or "Deep learning notebook — open to explore."
+            safe_desc = " ".join(raw_desc.split())  # collapse newlines/extra spaces to keep table layout intact
+            safe_desc = safe_desc.replace("|", "\\|")
+            desc = safe_desc[:90] + ("…" if len(safe_desc) > 90 else "")
             lines.append(
                 f"| {i} | [**{nb['title']}**]({nb['url']}) | {desc} | {tags_str} | {nb['updated']} |"
             )
