@@ -165,8 +165,8 @@ Deep-Learning-And-Neural-Network/
 </a>
 </td></tr></table>
 
-Building at the intersection of machine learning, web development, and agri-tech.
-Currently working on **KrishiMitra** (smart farming ML platform) and **ToyBill** (GST billing app).
+Building at the intersection of machine learning, web development, and web3.
+Currently working on my technical skills.
 Member of the **Amity Coding Club**.
 
 ---
