@@ -6,32 +6,54 @@
 ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-00e5ff?style=for-the-badge)
+![Notebooks](https://img.shields.io/badge/Notebooks-3-00e5ff?style=for-the-badge)
+![Auto Updated](https://img.shields.io/badge/Auto_Updated-22_Mar_2026_17%3A05_UTC-blueviolet?style=for-the-badge)
 
-**A hands-on exploration of forward propagation, neural network architecture,
-and the mathematics that power modern AI — built from scratch.**
+**A hands-on exploration of forward propagation, neural network architecture,**
+**and the mathematics that power modern AI — built from scratch.**
 
-[📓 Open Notebook](#-notebooks) · [🚀 Get Started](#-getting-started) · [🔬 Concepts](#-concepts-covered)
+[📓 Notebooks](#-notebooks) · [🔬 Concepts](#-concepts-covered) · [🚀 Get Started](#-getting-started) · [📂 Structure](#-repository-structure)
+
+> 🤖 _This README is **auto-generated** on every push via GitHub Actions._
+> Last updated: **22 Mar 2026 17:05 UTC**
 
 </div>
 
 ---
 
-## 📁 Notebooks
+## 📊 At a Glance
 
-| File | Description | Topics |
-|------|-------------|--------|
-| [`forward-propogation Neural Network and Deep Learning.ipynb`](./forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Implements forward propagation from the ground up through a deep neural network | Forward Pass, Activation Functions, Weight Init, NumPy |
+| 📓 Notebooks | 🏷️ Topics | 🌐 Language | ⚡ Runtime |
+|:---:|:---:|:---:|:---:|
+| **3** | **10** | Python 3 | Jupyter / Colab |
+
+---
+
+## 📓 Notebooks
+
+| # | Notebook | Description | Tags | Last Updated |
+|---|----------|-------------|------|-------------|
+| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import warnings
+
+# Su… | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 2 days ago |
+| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | `forward-propagation` `deep-learning` `neural-network` `numpy` | 2 days ago |
+| 3 | [**Sample Auto Test**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/sample-auto-notebook.ipynb) | This notebook exists to verify README auto-generation. | `numpy` | — |
+
+### ▶️ Open in Google Colab
+
+[![Alzheimer Dataset Used](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) `alzheimer-dataset-used.ipynb`
+[![Forward Propogation Neural Network And Deep Learning](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) `forward-propogation Neural Network and Deep Learning.ipynb`
+[![Sample Auto Test](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/sample-auto-notebook.ipynb) `sample-auto-notebook.ipynb`
 
 ---
 
 ## 🔬 Concepts Covered
 
 <details>
-<summary><strong>01 · Neural Network Fundamentals</strong></summary>
-<br>
+<summary><strong>01 · Neural Network Fundamentals</strong></summary><br>
 
-A neural network is a computational graph of interconnected nodes (neurons) arranged in layers. Each neuron computes a weighted sum of its inputs and passes it through an activation function.
+A neural network is a computational graph of interconnected nodes (neurons) arranged in layers.
 
 ```
 Input Layer → Hidden Layer(s) → Output Layer
@@ -40,75 +62,54 @@ Input Layer → Hidden Layer(s) → Output Layer
 </details>
 
 <details>
-<summary><strong>02 · Forward Propagation</strong></summary>
-<br>
+<summary><strong>02 · Forward Propagation</strong></summary><br>
 
-Forward propagation is the process of passing input data through the network to produce a prediction. At each layer:
+At each layer, forward propagation computes:
 
 ```python
 Z = np.dot(W, X) + b   # Weighted sum
-A = activation(Z)       # Apply activation function
+A = activation(Z)       # Apply activation
 ```
-
-This happens sequentially from the input layer to the output layer.
 
 </details>
 
 <details>
-<summary><strong>03 · Weights & Bias Initialization</strong></summary>
-<br>
-
-Proper initialization is critical to training stability:
+<summary><strong>03 · Weight & Bias Initialization</strong></summary><br>
 
 ```python
-W = np.random.randn(n_out, n_in) * 0.01   # Small random weights
-b = np.zeros((n_out, 1))                   # Zero biases
+W = np.random.randn(n_out, n_in) * 0.01  # Break symmetry
+b = np.zeros((n_out, 1))                  # Zero biases
 ```
-
-Poor initialization can cause **vanishing** or **exploding gradients**.
 
 </details>
 
 <details>
-<summary><strong>04 · Activation Functions</strong></summary>
-<br>
-
-Activation functions introduce non-linearity, enabling networks to learn complex patterns.
+<summary><strong>04 · Activation Functions</strong></summary><br>
 
 | Function | Formula | Use Case |
 |----------|---------|----------|
 | ReLU | `max(0, z)` | Hidden layers |
 | Sigmoid | `1 / (1 + e⁻ᶻ)` | Binary output |
-| Softmax | `eᶻⁱ / Σeᶻ` | Multi-class output |
+| Softmax | `eᶻⁱ / Σeᶻ` | Multi-class |
 
 </details>
 
 <details>
-<summary><strong>05 · Deep vs Shallow Networks</strong></summary>
-<br>
+<summary><strong>05 · Deep vs Shallow Networks</strong></summary><br>
 
-- **Shallow**: 1 hidden layer — simple, fast, limited representation power
-- **Deep**: 2+ hidden layers — hierarchical feature learning, requires careful training (gradient issues)
-
-Deep networks can represent more complex functions with fewer total neurons.
+- **Shallow**: 1 hidden layer — simpler, less expressive
+- **Deep**: 2+ hidden layers — hierarchical features, needs careful training
 
 </details>
 
 <details>
-<summary><strong>06 · Matrix Operations in NumPy</strong></summary>
-<br>
-
-All neural network math is vectorized using NumPy for efficiency:
+<summary><strong>06 · Vectorized NumPy Operations</strong></summary><br>
 
 ```python
-import numpy as np
-
-Z = np.dot(W, X) + b          # Vectorized weighted sum
-A = np.maximum(0, Z)           # ReLU — no Python loops needed
-sig = 1 / (1 + np.exp(-Z))    # Sigmoid
+Z   = np.dot(W, X) + b       # Entire batch at once
+A   = np.maximum(0, Z)        # ReLU — no loops
+sig = 1 / (1 + np.exp(-Z))   # Sigmoid
 ```
-
-Broadcasting handles entire batches simultaneously.
 
 </details>
 
@@ -119,36 +120,30 @@ Broadcasting handles entire batches simultaneously.
 ![Python](https://img.shields.io/badge/Python_3-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter_Notebook-F37626?style=flat-square&logo=jupyter&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=flat-square&logo=plotly&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=flat-square)
 ![Colab](https://img.shields.io/badge/Google_Colab_Ready-F9AB00?style=flat-square&logo=googlecolab&logoColor=white)
 
 ---
 
 ## 🚀 Getting Started
 
-**Step 1 — Clone the repository**
+**1. Clone the repository**
 ```bash
 git clone https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network.git
 cd Deep-Learning-And-Neural-Network
 ```
 
-**Step 2 — Install dependencies**
+**2. Install dependencies**
 ```bash
 pip install numpy matplotlib jupyter
 ```
 
-**Step 3 — Launch the notebook**
+**3. Launch Jupyter**
 ```bash
-jupyter notebook "forward-propogation Neural Network and Deep Learning.ipynb"
+jupyter notebook
 ```
 
-**Step 4 — Run all cells**
-
-Go to **Kernel → Restart & Run All** to execute from scratch and follow the complete forward propagation flow.
-
-> 💡 **Prefer Colab?** Click the badge below to open directly in your browser — no setup needed.
->
-> [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb)
+**4. Or open directly in Colab** — click any badge in the [Notebooks](#-notebooks) section above.
 
 ---
 
@@ -157,27 +152,425 @@ Go to **Kernel → Restart & Run All** to execute from scratch and follow the co
 ```
 Deep-Learning-And-Neural-Network/
 │
-├── forward-propogation Neural Network and Deep Learning.ipynb
-│   └── Forward pass implementation with activations & matrix ops
-│
-└── README.md
+├── 📓 alzheimer-dataset-used.ipynb
+├── 📓 forward-propogation Neural Network and Deep Learning.ipynb
+├── 📓 sample-auto-notebook.ipynb
+├── 🐍 .venv\Lib\site-packages\pip\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\__pip-runner__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\build_env.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cache.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\autocompletion.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\base_command.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\cmdoptions.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\command_context.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\index_command.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\main.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\main_parser.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\parser.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\progress_bars.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\req_command.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\spinners.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\cli\status_codes.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\cache.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\check.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\completion.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\configuration.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\debug.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\download.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\freeze.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\hash.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\help.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\index.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\inspect.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\install.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\list.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\lock.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\search.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\show.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\uninstall.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\commands\wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\configuration.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\distributions\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\distributions\base.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\distributions\installed.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\distributions\sdist.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\distributions\wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\exceptions.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\index\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\index\collector.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\index\package_finder.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\index\sources.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\locations\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\locations\_distutils.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\locations\_sysconfig.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\locations\base.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\main.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\_json.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\base.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\importlib\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\importlib\_compat.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\importlib\_dists.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\importlib\_envs.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\metadata\pkg_resources.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\candidate.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\direct_url.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\format_control.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\index.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\installation_report.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\link.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\release_control.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\scheme.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\search_scope.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\selection_prefs.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\target_python.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\models\wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\auth.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\cache.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\download.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\lazy_wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\session.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\utils.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\network\xmlrpc.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\build\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\build\build_tracker.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\build\metadata.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\build\metadata_editable.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\build\wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\build\wheel_editable.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\check.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\freeze.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\install\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\install\wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\operations\prepare.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\pyproject.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\constructors.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\pep723.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\req_dependency_group.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\req_file.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\req_install.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\req_set.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\req\req_uninstall.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\base.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\legacy\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\legacy\resolver.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\base.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\candidates.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\factory.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\found_candidates.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\provider.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\reporter.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\requirements.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\resolution\resolvelib\resolver.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\self_outdated_check.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\_jaraco_text.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\_log.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\appdirs.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\compat.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\compatibility_tags.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\datetime.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\deprecation.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\direct_url_helpers.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\egg_link.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\entrypoints.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\filesystem.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\filetypes.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\glibc.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\hashes.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\logging.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\misc.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\packaging.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\pylock.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\retry.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\subprocess.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\temp_dir.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\unpacking.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\urls.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\virtualenv.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\utils\wheel.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\vcs\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\vcs\bazaar.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\vcs\git.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\vcs\mercurial.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\vcs\subversion.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\vcs\versioncontrol.py
+├── 🐍 .venv\Lib\site-packages\pip\_internal\wheel_builder.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\_cmd.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\adapter.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\cache.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\caches\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\caches\file_cache.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\caches\redis_cache.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\controller.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\filewrapper.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\heuristics.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\serialize.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\cachecontrol\wrapper.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\certifi\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\certifi\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\certifi\core.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\dependency_groups\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\dependency_groups\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\dependency_groups\_implementation.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\dependency_groups\_lint_dependency_groups.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\dependency_groups\_pip_wrapper.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\dependency_groups\_toml_compat.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distlib\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distlib\compat.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distlib\resources.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distlib\scripts.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distlib\util.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distro\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distro\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\distro\distro.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\codec.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\compat.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\core.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\idnadata.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\intranges.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\package_data.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\idna\uts46data.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\msgpack\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\msgpack\exceptions.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\msgpack\ext.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\msgpack\fallback.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\_elffile.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\_manylinux.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\_musllinux.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\_parser.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\_structures.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\_tokenizer.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\licenses\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\licenses\_spdx.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\markers.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\metadata.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\pylock.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\requirements.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\specifiers.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\tags.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\utils.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\packaging\version.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pkg_resources\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\android.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\api.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\macos.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\unix.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\version.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\platformdirs\windows.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\console.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\filter.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\filters\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\formatter.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\formatters\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\formatters\_mapping.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\lexer.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\lexers\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\lexers\_mapping.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\lexers\python.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\modeline.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\plugin.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\regexopt.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\scanner.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\sphinxext.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\style.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\styles\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\styles\_mapping.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\token.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\unistring.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pygments\util.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pyproject_hooks\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pyproject_hooks\_impl.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\__version__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\_internal_utils.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\adapters.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\api.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\auth.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\certs.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\compat.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\cookies.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\exceptions.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\help.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\hooks.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\models.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\packages.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\sessions.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\status_codes.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\structures.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\requests\utils.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\providers.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\reporters.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\resolvers\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\resolvers\abstract.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\resolvers\criterion.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\resolvers\exceptions.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\resolvers\resolution.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\resolvelib\structs.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\__main__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_cell_widths.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_emoji_replace.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_export_format.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_extension.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_fileno.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_inspect.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_log_render.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_loop.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_null_file.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_palettes.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_pick.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_ratio.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_spinners.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_stack.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_timer.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_win32_console.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_windows.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_windows_renderer.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\_wrap.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\abc.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\align.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\ansi.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\bar.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\box.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\cells.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\color.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\color_triplet.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\columns.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\console.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\constrain.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\containers.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\control.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\default_styles.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\diagnose.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\emoji.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\errors.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\file_proxy.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\filesize.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\highlighter.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\json.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\jupyter.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\layout.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\live.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\live_render.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\logging.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\markup.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\measure.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\padding.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\pager.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\palette.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\panel.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\pretty.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\progress.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\progress_bar.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\prompt.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\protocol.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\region.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\repr.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\rule.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\scope.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\screen.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\segment.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\spinner.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\status.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\style.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\styled.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\syntax.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\table.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\terminal_theme.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\text.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\theme.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\themes.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\traceback.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\rich\tree.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\tomli\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\tomli\_parser.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\tomli\_re.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\tomli\_types.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\tomli_w\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\tomli_w\_writer.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\truststore\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\truststore\_api.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\truststore\_macos.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\truststore\_openssl.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\truststore\_ssl_constants.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\truststore\_windows.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\_collections.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\_version.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\connection.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\connectionpool.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\_appengine_environ.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\_securetransport\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\_securetransport\bindings.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\_securetransport\low_level.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\appengine.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\ntlmpool.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\pyopenssl.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\securetransport.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\contrib\socks.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\exceptions.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\fields.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\filepost.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\packages\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\packages\backports\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\packages\backports\makefile.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\packages\backports\weakref_finalize.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\packages\six.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\poolmanager.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\request.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\response.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\__init__.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\connection.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\proxy.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\queue.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\request.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\response.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\retry.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\ssl_.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\ssl_match_hostname.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\ssltransport.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\timeout.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\url.py
+├── 🐍 .venv\Lib\site-packages\pip\_vendor\urllib3\util\wait.py
+├── 📄 README.md  ← auto-generated
+└── 📁 .github/workflows/update-readme.yml
 ```
 
 ---
 
 ## 👤 Author
 
-<table>
-  <tr>
-    <td align="center">
-      <b>Vineet Mishra</b><br>
-      <sub>BTech CSE · Amity University, Gwalior</sub><br><br>
-      <a href="https://github.com/vineetm1204-m">
-        <img src="https://img.shields.io/badge/GitHub-vineetm1204--m-181717?style=flat-square&logo=github" />
-      </a>
-    </td>
-  </tr>
-</table>
+<table><tr><td align='center'>
+<b>Vineet Mishra</b><br>
+<sub>BTech CSE · Amity University, Gwalior</sub><br><br>
+<a href="https://github.com/vineetm1204-m">
+<img src="https://img.shields.io/badge/GitHub-vineetm1204-m-181717?style=flat-square&logo=github" />
+</a>
+</td></tr></table>
 
 Building at the intersection of machine learning, web development, and agri-tech.
 Currently working on **KrishiMitra** (smart farming ML platform) and **ToyBill** (GST billing app).
@@ -187,24 +580,24 @@ Member of the **Amity Coding Club**.
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
-
 1. Fork the repository
-2. Create your branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Open a Pull Request
+2. Create your branch: `git checkout -b feature/your-notebook`
+3. Add your `.ipynb` file
+4. Commit: `git commit -m 'Add: <topic> notebook'`
+5. Push & open a Pull Request
+
+> The README will **auto-update** to include your notebook on the next push! 🎉
 
 ---
 
 ## ⭐ Support
 
-If this helped you understand deep learning fundamentals, consider giving it a **star** — it means a lot!
+If this helped you understand deep learning fundamentals, drop a star!
 
 [![Star on GitHub](https://img.shields.io/github/stars/vineetm1204-m/Deep-Learning-And-Neural-Network?style=social)](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network)
 
 ---
 
 <div align="center">
-  <sub>Made with ❤️ by <a href="https://github.com/vineetm1204-m">vineetm1204-m</a> · Amity University Gwalior</sub>
+  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 22 Mar 2026 17:05 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mishra</a> · Amity University, Gwalior</sub>
 </div>
