@@ -151,94 +151,70 @@ def notebook_tags(path):
 
 def extract_concepts(path):
     """
-    Robust concept extractor:
-    - Works even if notebook has NO headings
-    - Uses headings + bold + keyword detection
-    - Guarantees output for every notebook
-    """
+    Extract concepts from a notebook.
 
+    Each ## / ### heading becomes one concept entry.
+    Body = markdown text + code snippets until next heading.
+
+    KEY FIX: flush() now takes `entry` as an explicit argument instead
+    of relying on a closure over `current`. The old closure captured the
+    variable binding, not the value — so when `current` was reassigned to
+    a new dict for the next concept, flush() in the next notebook iteration
+    would see the NEW (wrong) value rather than the one at flush-time.
+    Passing explicitly makes every flush deterministic.
+    """
     nb = _load_nb(path)
     if not nb:
         return []
 
-    concepts = []
-    seen_titles = set()
-
-    def add_concept(title, body):
-        title = title.strip()
-        if title and title.lower() not in seen_titles:
-            concepts.append({
-                "title": title,
-                "body": body.strip() if isinstance(body, str) else "\n".join(body)
-            })
-            seen_titles.add(title.lower())
-
+    lang = nb.get("metadata", {}).get("kernelspec", {}).get("language", "python") or "python"
     cells = nb.get("cells", [])
-
-    # ── 1. HEADING BASED EXTRACTION (PRIMARY)
+    concepts = []
     current = None
 
-    for cell in cells:
-        if cell.get("cell_type") != "markdown":
-            continue
-
-        lines = "".join(cell.get("source", [])).splitlines()
-
-        for line in lines:
-            line = line.strip()
-
-            if line.startswith("## ") or line.startswith("### "):
-                if current:
-                    add_concept(current["title"], current["body"])
-
-                current = {
-                    "title": line.lstrip("#").strip(),
-                    "body": []
-                }
-
-            elif current:
-                if line and not line.startswith("#"):
-                    current["body"].append(line)
-
-    if current:
-        add_concept(current["title"], current["body"])
-
-    # ── 2. BOLD TEXT EXTRACTION (SECONDARY)
-    for cell in cells:
-        if cell.get("cell_type") != "markdown":
-            continue
-
-        for line in "".join(cell.get("source", [])).splitlines():
-            matches = re.findall(r"\*\*(.+?)\*\*", line)
-            for m in matches:
-                add_concept(m, line)
-
-    # ── 3. KEYWORD BASED DETECTION (SMART FALLBACK)
-    keywords = [
-        "forward propagation", "backpropagation", "activation",
-        "relu", "sigmoid", "softmax",
-        "loss", "cross entropy", "mse",
-        "optimizer", "gradient descent",
-        "cnn", "convolution", "pooling",
-        "dropout", "batch normalization",
-        "keras", "tensorflow", "training"
-    ]
+    def flush(entry):
+        """Commit entry to concepts list — entry passed explicitly, no closure."""
+        if entry and entry.get("title"):
+            body_str = "\n".join(entry["body"]).rstrip()
+            concepts.append({"title": entry["title"], "body": body_str})
 
     for cell in cells:
-        text = "".join(cell.get("source", [])).lower()
+        ctype  = cell.get("cell_type", "")
+        source = "".join(cell.get("source", []))
 
-        for kw in keywords:
-            if kw in text:
-                add_concept(kw.title(), f"Concept related to {kw} found in notebook.")
+        if ctype == "markdown":
+            for line in source.splitlines():
+                stripped = line.rstrip()
+                if stripped.startswith("## ") or stripped.startswith("### "):
+                    flush(current)                    # ← explicit arg, not closure
+                    current = {"title": stripped.lstrip("#").strip(), "body": []}
+                elif current is not None:
+                    s = stripped.strip()
+                    if s and not s.startswith("#"):
+                        current["body"].append(stripped)
 
-    # ── 4. FINAL FALLBACK (IF NOTHING FOUND)
+        elif ctype == "code":
+            if current is not None and source.strip():
+                code_lines = [l for l in source.splitlines() if l.strip()][:12]
+                current["body"].append(f"```{lang}")
+                current["body"].extend(code_lines)
+                current["body"].append("```")
+
+    flush(current)   # flush last entry
+
+    # Fallback: no headings → bold lines as micro-concepts
     if not concepts:
-        add_concept(
-            Path(path).stem.replace("_", " ").title(),
-            "General notebook covering deep learning implementation."
-        )
+        for cell in cells:
+            if cell.get("cell_type") != "markdown":
+                continue
+            for line in "".join(cell.get("source", [])).splitlines():
+                m = re.match(r"^\*\*(.+?)\*\*", line.strip())
+                if m:
+                    concepts.append({"title": m.group(1), "body": line.strip()})
+            if len(concepts) >= 10:
+                break
 
-    return concepts[:15]   # limit to avoid clutter
+    return concepts
 
 
 # ── REPO SCANNER ──────────────────────────────────────────────────────────────
@@ -271,7 +247,7 @@ def scan_repo(root):
                 "commits":  git_commit_count(str(rel)),
                 "url":      f"{REPO_URL}/blob/{BRANCH}/{rel_str}",
                 "colab":    f"https://colab.research.google.com/github/{REPO_OWNER}/{REPO_NAME}/blob/{BRANCH}/{rel_str}",
-                "concepts": list(concepts),
+                "concepts": extract_concepts(item),
             })
 
         elif item.suffix in SCRIPT_EXTS:
@@ -364,24 +340,28 @@ def build_readme(data):
     global_idx   = 1
     any_concepts = False
 
-   for nb in notebooks:
-    concepts = nb.get("concepts", [])
+    for nb in notebooks:
+        concepts = nb.get("concepts", [])
+        if not concepts:
+            continue
+        any_concepts = True
 
-    if not concepts:
-        continue
+        if len(notebooks) > 1:
+            lines += [f"### 📓 [{nb['title']}]({nb['url']})", ""]
 
-    lines += [f"### 📓 [{nb['title']}]({nb['url']})", ""]
-
-    for i, concept in enumerate(concepts, 1):
-        lines += [
-            "<details>",
-            f"<summary><strong>{i:02d} · {concept['title']}</strong></summary>",
-            "<br>",
-            concept["body"],
-            "",
-            "</details>",
-            ""
-        ]
+        for concept in concepts:
+            title = concept["title"]
+            body  = concept["body"]
+            lines += [
+                "<details>",
+                f"<summary><strong>{global_idx:02d} · {title}</strong></summary>",
+                "<br>",
+                "",
+                body if isinstance(body, str) else "\n".join(body),
+                "",
+                "</details>",
+                "",
+            ]
             global_idx += 1
 
     if not any_concepts:
@@ -470,8 +450,8 @@ def build_readme(data):
         "</a>",
         "</td></tr></table>",
         "",
-        "Building at the intersection of machine learning, web development, and web3.",
-        "Currently working on my Technical Skills.",
+        "Building at the intersection of machine learning, web development, and agri-tech.",
+        "Currently working on **KrishiMitra** (smart farming ML platform) and **ToyBill** (GST billing app).",
         "Member of the **Amity Coding Club**.",
         "",
         "---",
