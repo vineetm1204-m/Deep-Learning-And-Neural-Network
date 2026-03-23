@@ -271,8 +271,6 @@ def scan_repo(root):
                 "commits":  git_commit_count(str(rel)),
                 "url":      f"{REPO_URL}/blob/{BRANCH}/{rel_str}",
                 "colab":    f"https://colab.research.google.com/github/{REPO_OWNER}/{REPO_NAME}/blob/{BRANCH}/{rel_str}",
-                 concepts = extract_concepts(item)
-                 print(f"[DEBUG] {item} → {len(concepts)} concepts")
                 "concepts": list(concepts),
             })
 
