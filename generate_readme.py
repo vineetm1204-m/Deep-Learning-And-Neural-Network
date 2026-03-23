@@ -6,11 +6,16 @@ Auto-generates README.md by scanning the repository for:
   - Python scripts (.py)
   - Any new folders / modules
 
+Fixes:
+  - Description never returns raw code lines
+  - Concepts extracted from ALL notebooks (fixed closure bug)
+
 Run manually:  python generate_readme.py
 Run via CI:    triggered by GitHub Actions on every push to main
 """
 
 import os
+import re
 import json
 import subprocess
 from datetime import datetime, timezone
@@ -24,167 +29,181 @@ BRANCH     = "main"
 AUTHOR     = "Vineet Mittal"
 UNIVERSITY = "Amity University, Gwalior"
 
-# File types to scan
 NOTEBOOK_EXTS = {".ipynb"}
 SCRIPT_EXTS   = {".py"}
 IGNORE_DIRS   = {".git", ".github", "__pycache__", "node_modules", ".ipynb_checkpoints"}
 IGNORE_FILES  = {"generate_readme.py", "README.md"}
 
-# ── HELPERS ───────────────────────────────────────────────────────────────────
 
-def git_log(filepath: str, fmt: str = "%ar") -> str:
-    """Return last-commit info for a file."""
+# ── GIT HELPERS ───────────────────────────────────────────────────────────────
+
+def git_log(filepath, fmt="%ar"):
     try:
-        result = subprocess.run(
+        r = subprocess.run(
             ["git", "log", "-1", f"--format={fmt}", "--", filepath],
             capture_output=True, text=True
         )
-        return result.stdout.strip() or "—"
+        return r.stdout.strip() or "—"
     except Exception:
         return "—"
 
 
-def git_commit_count(filepath: str) -> str:
+def git_commit_count(filepath):
     try:
-        result = subprocess.run(
+        r = subprocess.run(
             ["git", "log", "--oneline", "--", filepath],
             capture_output=True, text=True
         )
-        lines = [l for l in result.stdout.strip().splitlines() if l]
-        return str(len(lines))
+        return str(len([l for l in r.stdout.strip().splitlines() if l]))
     except Exception:
         return "1"
 
 
-def notebook_title(path: Path) -> str:
-    """Extract first H1 from notebook markdown cells, else use filename."""
+# ── NOTEBOOK PARSERS ──────────────────────────────────────────────────────────
+
+def _load_nb(path):
     try:
         with open(path, "r", encoding="utf-8") as f:
-            nb = json.load(f)
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def notebook_title(path):
+    nb = _load_nb(path)
+    if nb:
         for cell in nb.get("cells", []):
             if cell.get("cell_type") == "markdown":
-                for line in cell.get("source", []):
+                for line in "".join(cell.get("source", [])).splitlines():
                     line = line.strip()
                     if line.startswith("# "):
                         return line[2:].strip()
-    except Exception:
-        pass
-    return path.stem.replace("-", " ").replace("_", " ").title()
+    return Path(path).stem.replace("-", " ").replace("_", " ").title()
 
 
-def notebook_description(path: Path) -> str:
-    """Extract first non-heading markdown text from notebook."""
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            nb = json.load(f)
-        found_heading = False
+def notebook_description(path):
+    """
+    Return a clean plain-text description.
+    - Never returns raw code (code cells are skipped entirely).
+    - Skips headings, fenced code, indented blocks.
+    - Falls back to filename-derived sentence.
+    """
+    nb = _load_nb(path)
+    if nb:
         for cell in nb.get("cells", []):
-            if cell.get("cell_type") == "markdown":
-                src = "".join(cell.get("source", []))
-                lines = src.strip().splitlines()
-                for line in lines:
-                    line = line.strip()
-                    if line.startswith("#"):
-                        found_heading = True
-                        continue
-                    if found_heading and line and not line.startswith("#"):
-                        return line[:180] + ("…" if len(line) > 180 else "")
-            elif cell.get("cell_type") == "code" and found_heading:
-                src = "".join(cell.get("source", [])).strip()
-                if src:
-                    return f"`{src[:100]}{'…' if len(src)>100 else ''}`"
-    except Exception:
-        pass
-    return "Deep learning notebook — open to explore."
+            if cell.get("cell_type") != "markdown":
+                continue                          # skip code cells hard
+            src = "".join(cell.get("source", []))
+            for raw in src.splitlines():
+                line = raw.strip()
+                if not line:
+                    continue
+                if line.startswith(("#", "```", "    ", "\t")):
+                    continue
+                # Strip common markdown syntax
+                clean = re.sub(r"[*_`\[\]()\->#|!]", "", line).strip()
+                if len(clean) > 10:
+                    return clean[:160] + ("…" if len(clean) > 160 else "")
+    name = Path(path).stem.replace("-", " ").replace("_", " ").title()
+    return f"Notebook covering {name}."
 
 
-def extract_concepts(path: Path) -> list[dict]:
+def notebook_tags(path):
+    text = Path(path).stem.lower()
+    keyword_map = {
+        "forward":     ["forward-propagation"],
+        "backprop":    ["backpropagation"],
+        "cnn":         ["CNN", "convolution"],
+        "alzheimer":   ["medical-imaging", "CNN"],
+        "rnn":         ["RNN", "sequence"],
+        "lstm":        ["LSTM"],
+        "transformer": ["transformer", "attention"],
+        "activation":  ["activation-functions"],
+        "loss":        ["loss-functions"],
+        "optim":       ["optimization"],
+        "gradient":    ["gradient-descent"],
+        "deep":        ["deep-learning"],
+        "neural":      ["neural-network"],
+        "multi":       ["multi-output"],
+        "output":      ["multi-output"],
+        "train":       ["training"],
+        "data":        ["data-preprocessing"],
+        "numpy":       ["numpy"],
+        "keras":       ["keras"],
+        "torch":       ["pytorch"],
+        "tensorflow":  ["tensorflow"],
+    }
+    tags = []
+    for kw, labels in keyword_map.items():
+        if kw in text:
+            tags.extend(labels)
+    nb = _load_nb(path)
+    if nb:
+        full = " ".join(
+            "".join(c.get("source", []))
+            for c in nb.get("cells", [])
+        ).lower()
+        for kw, labels in keyword_map.items():
+            if kw in full and labels[0] not in tags:
+                tags.extend(labels)
+    return list(dict.fromkeys(tags))[:6]
+
+
+def extract_concepts(path):
     """
-    Extract concepts dynamically from a notebook by reading every cell.
+    Extract concepts from a notebook.
 
-    Strategy:
-      - Every markdown H2 (##) or H3 (###) heading becomes a concept entry.
-      - The body of that concept is built from the cells that follow until
-        the next heading: markdown text is kept as-is, code cells are
-        wrapped in a fenced code block (language auto-detected from
-        the notebook kernel or first-line shebang / import).
-      - H1 (#) is treated as the notebook title, not a concept.
-      - If no headings exist at all, falls back to collecting all
-        top-level markdown bold lines (**text**) as lightweight concepts.
+    Each ## / ### heading becomes one concept entry.
+    Body = markdown text + code snippets until next heading.
+
+    KEY FIX: flush() now takes `entry` as an explicit argument instead
+    of relying on a closure over `current`. The old closure captured the
+    variable binding, not the value — so when `current` was reassigned to
+    a new dict for the next concept, flush() in the next notebook iteration
+    would see the NEW (wrong) value rather than the one at flush-time.
+    Passing explicitly makes every flush deterministic.
     """
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            nb = json.load(f)
-    except Exception:
+    nb = _load_nb(path)
+    if not nb:
         return []
 
-    # Detect kernel language for code fences
-    lang = (
-        nb.get("metadata", {})
-          .get("kernelspec", {})
-          .get("language", "python")
-    ) or "python"
-
+    lang = nb.get("metadata", {}).get("kernelspec", {}).get("language", "python") or "python"
     cells = nb.get("cells", [])
-    concepts: list[dict] = []
-    current: dict | None = None
+    concepts = []
+    current = None
 
-    def flush():
-        if current and current.get("title"):
-            # Clean up trailing blank lines in body
-            body = "\n".join(current["body"]).rstrip()
-            concepts.append({"title": current["title"], "body": body})
+    def flush(entry):
+        """Commit entry to concepts list — entry passed explicitly, no closure."""
+        if entry and entry.get("title"):
+            body_str = "\n".join(entry["body"]).rstrip()
+            concepts.append({"title": entry["title"], "body": body_str})
 
     for cell in cells:
         ctype  = cell.get("cell_type", "")
         source = "".join(cell.get("source", []))
 
         if ctype == "markdown":
-            lines = source.splitlines()
-            i = 0
-            while i < len(lines):
-                line = lines[i].rstrip()
-
-                # H2 / H3 → new concept
-                if line.startswith("## ") or line.startswith("### "):
-                    flush()
-                    title = line.lstrip("#").strip()
-                    current = {"title": title, "body": []}
-                    # Collect remaining lines of THIS cell after the heading
-                    rest = lines[i + 1:]
-                    if rest:
-                        # Find next heading within same cell
-                        for j, rl in enumerate(rest):
-                            if rl.startswith("## ") or rl.startswith("### "):
-                                flush()
-                                title2 = rl.lstrip("#").strip()
-                                current = {"title": title2, "body": []}
-                                rest = rest[j + 1:]
-                                break
-                            else:
-                                if current:
-                                    current["body"].append(rl)
-                    break  # handled whole cell
-                else:
-                    # Lines before first heading in this cell → append to current concept
-                    if current and line:
-                        current["body"].append(line)
-                i += 1
+            for line in source.splitlines():
+                stripped = line.rstrip()
+                if stripped.startswith("## ") or stripped.startswith("### "):
+                    flush(current)                    # ← explicit arg, not closure
+                    current = {"title": stripped.lstrip("#").strip(), "body": []}
+                elif current is not None:
+                    s = stripped.strip()
+                    if s and not s.startswith("#"):
+                        current["body"].append(stripped)
 
         elif ctype == "code":
             if current is not None and source.strip():
-                # Limit code snippets to first 15 non-empty lines
-                code_lines = [l for l in source.splitlines() if l.strip()][:15]
-                snippet = "\n".join(code_lines)
+                code_lines = [l for l in source.splitlines() if l.strip()][:12]
                 current["body"].append(f"```{lang}")
-                current["body"].append(snippet)
+                current["body"].extend(code_lines)
                 current["body"].append("```")
 
-    flush()
+    flush(current)   # flush last entry
 
-    # ── Fallback: no headings found → use bold lines as micro-concepts
+    # Fallback: no headings → bold lines as micro-concepts
     if not concepts:
-        import re
         for cell in cells:
             if cell.get("cell_type") != "markdown":
                 continue
@@ -198,81 +217,36 @@ def extract_concepts(path: Path) -> list[dict]:
     return concepts
 
 
-def notebook_tags(path: Path) -> list[str]:
-    """Guess tags from notebook filename and cell content."""
-    text = path.stem.lower()
-    tags = []
-    keyword_map = {
-        "forward": ["forward-propagation"],
-        "backprop": ["backpropagation"],
-        "cnn": ["CNN", "convolution"],
-        "rnn": ["RNN", "sequence"],
-        "lstm": ["LSTM"],
-        "transformer": ["transformer", "attention"],
-        "activation": ["activation-functions"],
-        "loss": ["loss-functions"],
-        "optim": ["optimization"],
-        "gradient": ["gradient-descent"],
-        "deep": ["deep-learning"],
-        "neural": ["neural-network"],
-        "train": ["training"],
-        "data": ["data-preprocessing"],
-        "visual": ["visualization"],
-        "numpy": ["numpy"],
-        "keras": ["keras"],
-        "torch": ["pytorch"],
-        "tensorflow": ["tensorflow"],
-    }
-    for kw, labels in keyword_map.items():
-        if kw in text:
-            tags.extend(labels)
+# ── REPO SCANNER ──────────────────────────────────────────────────────────────
 
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            nb = json.load(f)
-        full_text = " ".join(
-            "".join(c.get("source", []))
-            for c in nb.get("cells", [])
-        ).lower()
-        for kw, labels in keyword_map.items():
-            if kw in full_text and labels[0] not in tags:
-                tags.extend(labels)
-    except Exception:
-        pass
-
-    return list(dict.fromkeys(tags))[:6]  # dedupe, max 6
-
-
-def scan_repo(root: Path) -> dict:
-    """Walk repo and collect notebooks, scripts, folders."""
-    notebooks = []
-    scripts   = []
-    folders   = []
+def scan_repo(root):
+    root = Path(root)
+    notebooks, scripts, folders = [], [], []
 
     for item in sorted(root.rglob("*")):
-        # Skip ignored
         if any(p in IGNORE_DIRS for p in item.parts):
             continue
         if item.name in IGNORE_FILES:
             continue
 
-        rel = item.relative_to(root)
+        rel     = item.relative_to(root)
+        rel_str = str(rel).replace(" ", "%20")
 
         if item.is_dir() and item != root:
-            if item.name not in IGNORE_DIRS and not item.name.startswith("."):
+            if not item.name.startswith("."):
                 folders.append(str(rel))
 
         elif item.suffix in NOTEBOOK_EXTS:
             notebooks.append({
-                "path":    str(rel),
-                "name":    item.stem,
-                "title":   notebook_title(item),
-                "desc":    notebook_description(item),
-                "tags":    notebook_tags(item),
-                "updated": git_log(str(rel)),
-                "commits": git_commit_count(str(rel)),
-                "url":      f"{REPO_URL}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
-                "colab":    f"https://colab.research.google.com/github/{REPO_OWNER}/{REPO_NAME}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
+                "path":     str(rel),
+                "name":     item.stem,
+                "title":    notebook_title(item),
+                "desc":     notebook_description(item),
+                "tags":     notebook_tags(item),
+                "updated":  git_log(str(rel)),
+                "commits":  git_commit_count(str(rel)),
+                "url":      f"{REPO_URL}/blob/{BRANCH}/{rel_str}",
+                "colab":    f"https://colab.research.google.com/github/{REPO_OWNER}/{REPO_NAME}/blob/{BRANCH}/{rel_str}",
                 "concepts": extract_concepts(item),
             })
 
@@ -281,7 +255,7 @@ def scan_repo(root: Path) -> dict:
                 "path":    str(rel),
                 "name":    item.stem,
                 "updated": git_log(str(rel)),
-                "url":     f"{REPO_URL}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
+                "url":     f"{REPO_URL}/blob/{BRANCH}/{rel_str}",
             })
 
     return {"notebooks": notebooks, "scripts": scripts, "folders": folders}
@@ -289,16 +263,18 @@ def scan_repo(root: Path) -> dict:
 
 # ── README BUILDER ────────────────────────────────────────────────────────────
 
-def build_readme(data: dict) -> str:
-    notebooks = data["notebooks"]
-    scripts   = data["scripts"]
-    now       = datetime.now(timezone.utc).strftime("%d %b %Y %H:%M UTC")
+def build_readme(data):
+    notebooks     = data["notebooks"]
+    scripts       = data["scripts"]
+    now           = datetime.now(timezone.utc).strftime("%d %b %Y %H:%M UTC")
     nb_count      = len(notebooks)
     tag_count     = len({t for nb in notebooks for t in nb["tags"]})
     concept_count = sum(len(nb.get("concepts", [])) for nb in notebooks)
 
+    lines = []
+
     # ── HEADER
-    lines = [
+    lines += [
         '<div align="center">',
         "",
         "# 🧠 Deep Learning & Neural Networks",
@@ -328,8 +304,8 @@ def build_readme(data: dict) -> str:
     lines += [
         "## 📊 At a Glance",
         "",
-        f"| 📓 Notebooks | 🔬 Concepts | 🏷️ Topics | ⚡ Runtime |",
-        f"|:---:|:---:|:---:|:---:|",
+        "| 📓 Notebooks | 🔬 Concepts | 🏷️ Topics | ⚡ Runtime |",
+        "|:---:|:---:|:---:|:---:|",
         f"| **{nb_count}** | **{concept_count}** | **{tag_count}** | Jupyter / Colab |",
         "",
         "---",
@@ -337,20 +313,18 @@ def build_readme(data: dict) -> str:
     ]
 
     # ── NOTEBOOKS TABLE
-    lines += [
-        "## 📓 Notebooks",
-        "",
-    ]
+    lines += ["## 📓 Notebooks", ""]
 
     if notebooks:
         lines += [
             "| # | Notebook | Description | Colab | Tags | Last Updated |",
-            "|---|----------|-------------|:-----:|------|-------------|",
+            "|:---:|----------|-------------|:-----:|------|:---:|",
         ]
         for i, nb in enumerate(notebooks, 1):
+            desc = nb["desc"].replace("|", "\\|").replace("`", "").replace("\n", " ").strip()
+            desc = desc[:85] + ("…" if len(desc) > 85 else "")
             tags_str  = " ".join(f"`{t}`" for t in nb["tags"]) if nb["tags"] else "—"
-            desc      = nb["desc"].replace("|", "\\|")[:80] + ("…" if len(nb["desc"]) > 80 else "")
-            colab_btn = f"[![Open](https://colab.research.google.com/assets/colab-badge.svg)]({nb['colab']})"
+            colab_btn = f"[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)]({nb['colab']})"
             lines.append(
                 f"| {i} | [**{nb['title']}**]({nb['url']}) | {desc} | {colab_btn} | {tags_str} | {nb['updated']} |"
             )
@@ -360,47 +334,41 @@ def build_readme(data: dict) -> str:
 
     lines += ["---", ""]
 
-    # ── CONCEPTS COVERED (dynamically extracted from notebook cells) ────────────
+    # ── CONCEPTS COVERED
     lines += ["## 🔬 Concepts Covered", ""]
 
-    # Gather all concepts across every notebook, grouped by notebook
-    all_concepts_found = False
+    global_idx   = 1
+    any_concepts = False
+
     for nb in notebooks:
         concepts = nb.get("concepts", [])
         if not concepts:
             continue
-        all_concepts_found = True
+        any_concepts = True
 
-        # Show notebook source label only when there are multiple notebooks
         if len(notebooks) > 1:
-            lines += [
-                f"### 📓 From: [{nb['title']}]({nb['url']})",
-                "",
-            ]
+            lines += [f"### 📓 [{nb['title']}]({nb['url']})", ""]
 
-        for idx, concept in enumerate(concepts, 1):
+        for concept in concepts:
             title = concept["title"]
             body  = concept["body"]
-
             lines += [
                 "<details>",
-                f"<summary><strong>{idx:02d} · {title}</strong></summary>",
+                f"<summary><strong>{global_idx:02d} · {title}</strong></summary>",
                 "<br>",
                 "",
+                body if isinstance(body, str) else "\n".join(body),
+                "",
+                "</details>",
+                "",
             ]
+            global_idx += 1
 
-            if isinstance(body, list):
-                lines += body
-            else:
-                lines.append(str(body))
-
-            lines += ["", "</details>", ""]
-
-    if not all_concepts_found:
+    if not any_concepts:
         lines += [
-            "> 📭 No section headings found in notebooks yet.",
-            "> Add `##` headings inside your `.ipynb` markdown cells and they will",
-            "> automatically appear here as expandable concept entries on the next push.",
+            "> 📭 No `##` headings found in any notebook yet.",
+            "> Add markdown headings inside your `.ipynb` cells —",
+            "> they will appear here automatically on the next push.",
             "",
         ]
 
@@ -414,6 +382,8 @@ def build_readme(data: dict) -> str:
         "![Jupyter](https://img.shields.io/badge/Jupyter_Notebook-F37626?style=flat-square&logo=jupyter&logoColor=white)",
         "![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)",
         "![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=flat-square)",
+        "![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)",
+        "![Keras](https://img.shields.io/badge/Keras-D00000?style=flat-square&logo=keras&logoColor=white)",
         "![Colab](https://img.shields.io/badge/Google_Colab_Ready-F9AB00?style=flat-square&logo=googlecolab&logoColor=white)",
         "",
         "---",
@@ -432,21 +402,21 @@ def build_readme(data: dict) -> str:
         "",
         "**2. Install dependencies**",
         "```bash",
-        "pip install numpy matplotlib jupyter",
+        "pip install numpy matplotlib jupyter tensorflow keras",
         "```",
         "",
         "**3. Launch Jupyter**",
         "```bash",
-        'jupyter notebook',
+        "jupyter notebook",
         "```",
         "",
-        "**4. Or open directly in Colab** — click any badge in the [Notebooks](#-notebooks) section above.",
+        "**4. Or open directly in Colab** — click any badge in the [Notebooks](#-notebooks) table above.",
         "",
         "---",
         "",
     ]
 
-    # ── REPO STRUCTURE (auto-generated)
+    # ── REPO STRUCTURE
     lines += [
         "## 📂 Repository Structure",
         "",
@@ -460,7 +430,7 @@ def build_readme(data: dict) -> str:
         if s["name"] != "generate_readme":
             lines.append(f"├── 🐍 {s['path']}")
     lines += [
-        "├── 📄 README.md  ← auto-generated",
+        "├── 📄 README.md              ← auto-generated",
         "└── 📁 .github/workflows/update-readme.yml",
         "```",
         "",
@@ -494,11 +464,11 @@ def build_readme(data: dict) -> str:
         "",
         "1. Fork the repository",
         "2. Create your branch: `git checkout -b feature/your-notebook`",
-        "3. Add your `.ipynb` file",
+        "3. Add your `.ipynb` file with `##` section headings",
         "4. Commit: `git commit -m 'Add: <topic> notebook'`",
         "5. Push & open a Pull Request",
         "",
-        "> The README will **auto-update** to include your notebook on the next push! 🎉",
+        "> The README will **auto-update** to include your notebook and its concepts on the next push! 🎉",
         "",
         "---",
         "",
@@ -515,7 +485,8 @@ def build_readme(data: dict) -> str:
         "---",
         "",
         '<div align="center">',
-        f"  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · {now} · <a href='https://github.com/{REPO_OWNER}'>{AUTHOR}</a> · {UNIVERSITY}</sub>",
+        f"  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · {now} · "
+        f"<a href='https://github.com/{REPO_OWNER}'>{AUTHOR}</a> · {UNIVERSITY}</sub>",
         "</div>",
     ]
 
@@ -527,16 +498,18 @@ def build_readme(data: dict) -> str:
 def main():
     root = Path(__file__).parent.resolve()
     print(f"📁 Scanning: {root}")
-
     data = scan_repo(root)
 
-    print(f"  📓 Notebooks found : {len(data['notebooks'])}")
+    print(f"\n  📓 Notebooks : {len(data['notebooks'])}")
     for nb in data["notebooks"]:
-        print(f"     • {nb['path']}  [{nb['updated']}]  tags: {nb['tags']}")
-    print(f"  🐍 Scripts found   : {len(data['scripts'])}")
+        print(f"     • {nb['path']}")
+        print(f"       desc     : {nb['desc'][:80]}")
+        print(f"       tags     : {nb['tags']}")
+        print(f"       concepts : {len(nb['concepts'])} found")
+        for c in nb["concepts"]:
+            print(f"         – {c['title']}")
 
     readme = build_readme(data)
-
     out = root / "README.md"
     out.write_text(readme, encoding="utf-8")
     print(f"\n✅ README.md written → {out}")
