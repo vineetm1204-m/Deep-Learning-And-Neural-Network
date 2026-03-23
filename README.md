@@ -6,8 +6,8 @@
 ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)
-![Notebooks](https://img.shields.io/badge/Notebooks-2-00e5ff?style=for-the-badge)
-![Auto Updated](https://img.shields.io/badge/Auto_Updated-22_Mar_2026_17%3A28_UTC-blueviolet?style=for-the-badge)
+![Notebooks](https://img.shields.io/badge/Notebooks-3-00e5ff?style=for-the-badge)
+![Auto Updated](https://img.shields.io/badge/Auto_Updated-23_Mar_2026_17%3A26_UTC-blueviolet?style=for-the-badge)
 
 **A hands-on exploration of forward propagation, neural network architecture,**
 **and the mathematics that power modern AI — built from scratch.**
@@ -15,7 +15,7 @@
 [📓 Notebooks](#-notebooks) · [🔬 Concepts](#-concepts-covered) · [🚀 Get Started](#-getting-started) · [📂 Structure](#-repository-structure)
 
 > 🤖 _This README is **auto-generated** on every push via GitHub Actions._
-> Last updated: **22 Mar 2026 17:28 UTC**
+> Last updated: **23 Mar 2026 17:26 UTC**
 
 </div>
 
@@ -25,16 +25,25 @@
 
 | 📓 Notebooks | 🏷️ Topics | 🌐 Language | ⚡ Runtime |
 |:---:|:---:|:---:|:---:|
-| **2** | **10** | Python 3 | Jupyter / Colab |
+| **3** | **12** | Python 3 | Jupyter / Colab |
 
 ---
 
 ## 📓 Notebooks
 
-| # | Notebook | Open | Description | Tags | Last Updated |
-|---|----------|------|-------------|------|-------------|
-| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator...` | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 2 days ago |
-| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | `forward-propagation` `deep-learning` `neural-network` `numpy` | 2 days ago |
+| # | Notebook | Description | Tags | Last Updated |
+|---|----------|-------------|------|-------------|
+| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator import warnings # Sup… | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 3 days ago |
+| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | `forward-propagation` `deep-learning` `neural-network` `numpy` | 3 days ago |
+| 3 | [**Multi Output Neural Network Keras**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | Deep learning notebook — open to explore. | `neural-network` `keras` `activation-functions` `tensorflow` | 10 seconds ago |
+
+### ▶️ Open in Google Colab
+
+[![Alzheimer Dataset Used](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) `alzheimer-dataset-used.ipynb`
+[![Forward Propogation Neural Network And Deep Learning](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) `forward-propogation Neural Network and Deep Learning.ipynb`
+[![Multi Output Neural Network Keras](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) `multi-output-neural-network-keras.ipynb`
+
+---
 
 ## 🔬 Concepts Covered
 
@@ -142,6 +151,7 @@ Deep-Learning-And-Neural-Network/
 │
 ├── 📓 alzheimer-dataset-used.ipynb
 ├── 📓 forward-propogation Neural Network and Deep Learning.ipynb
+├── 📓 multi-output-neural-network-keras.ipynb
 ├── 📄 README.md  ← auto-generated
 └── 📁 .github/workflows/update-readme.yml
 ```
@@ -151,15 +161,15 @@ Deep-Learning-And-Neural-Network/
 ## 👤 Author
 
 <table><tr><td align='center'>
-<b>Vineet Mittal</b><br>
+<b>Vineet Mishra</b><br>
 <sub>BTech CSE · Amity University, Gwalior</sub><br><br>
 <a href="https://github.com/vineetm1204-m">
-<img src="https://img.shields.io/badge/GitHub-vineetm1204--m-181717?style=flat-square&logo=github&logoColor=white" />
+<img src="https://img.shields.io/badge/GitHub-vineetm1204-m-181717?style=flat-square&logo=github" />
 </a>
 </td></tr></table>
 
-Building at the intersection of machine learning, web development, and web3.
-Currently working on my technical skills.
+Building at the intersection of machine learning, web development, and agri-tech.
+Currently working on **KrishiMitra** (smart farming ML platform) and **ToyBill** (GST billing app).
 Member of the **Amity Coding Club**.
 
 ---
@@ -185,5 +195,5 @@ If this helped you understand deep learning fundamentals, drop a star!
 ---
 
 <div align="center">
-  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 22 Mar 2026 17:28 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mittal</a> · Amity University, Gwalior</sub>
+  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 23 Mar 2026 17:26 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mishra</a> · Amity University, Gwalior</sub>
 </div>
