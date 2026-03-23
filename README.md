@@ -7,7 +7,7 @@
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)
 ![Notebooks](https://img.shields.io/badge/Notebooks-3-00e5ff?style=for-the-badge)
-![Auto Updated](https://img.shields.io/badge/Auto_Updated-23_Mar_2026_17%3A31_UTC-blueviolet?style=for-the-badge)
+![Auto Updated](https://img.shields.io/badge/Auto_Updated-23_Mar_2026_17%3A45_UTC-blueviolet?style=for-the-badge)
 
 **A hands-on exploration of forward propagation, neural network architecture,**
 **and the mathematics that power modern AI — built from scratch.**
@@ -15,7 +15,7 @@
 [📓 Notebooks](#-notebooks) · [🔬 Concepts](#-concepts-covered) · [🚀 Get Started](#-getting-started) · [📂 Structure](#-repository-structure)
 
 > 🤖 _This README is **auto-generated** on every push via GitHub Actions._
-> Last updated: **23 Mar 2026 17:31 UTC**
+> Last updated: **23 Mar 2026 17:45 UTC**
 
 </div>
 
@@ -23,90 +23,32 @@
 
 ## 📊 At a Glance
 
-| 📓 Notebooks | 🏷️ Topics | 🌐 Language | ⚡ Runtime |
+| 📓 Notebooks | 🔬 Concepts | 🏷️ Topics | ⚡ Runtime |
 |:---:|:---:|:---:|:---:|
-| **3** | **12** | Python 3 | Jupyter / Colab |
+| **3** | **1** | **12** | Jupyter / Colab |
 
 ---
 
 ## 📓 Notebooks
 
-| # | Notebook | Description | Tags | Last Updated |
-|---|----------|-------------|------|-------------|
-| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator import warnings # Sup… | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 3 days ago |
-| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | `forward-propagation` `deep-learning` `neural-network` `numpy` | 3 days ago |
-| 3 | [**Multi Output Neural Network Keras**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | Deep learning notebook — open to explore. | `neural-network` `keras` `activation-functions` `tensorflow` | 5 minutes ago |
-
-### ▶️ Open in Google Colab
-
-[![Alzheimer Dataset Used](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) `alzheimer-dataset-used.ipynb`
-[![Forward Propogation Neural Network And Deep Learning](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) `forward-propogation Neural Network and Deep Learning.ipynb`
-[![Multi Output Neural Network Keras](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) `multi-output-neural-network-keras.ipynb`
+| # | Notebook | Description | Colab | Tags | Last Updated |
+|---|----------|-------------|:-----:|------|-------------|
+| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import warn… | [![Open](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 3 days ago |
+| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | [![Open](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | `forward-propagation` `deep-learning` `neural-network` `numpy` | 3 days ago |
+| 3 | [**Multi Output Neural Network Keras**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | Deep learning notebook — open to explore. | [![Open](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | `neural-network` `keras` `activation-functions` `tensorflow` | 20 minutes ago |
 
 ---
 
 ## 🔬 Concepts Covered
 
-<details>
-<summary><strong>01 · Neural Network Fundamentals</strong></summary><br>
-
-A neural network is a computational graph of interconnected nodes (neurons) arranged in layers.
-
-```
-Input Layer → Hidden Layer(s) → Output Layer
-```
-
-</details>
+### 📓 From: [Alzheimer Dataset Used](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb)
 
 <details>
-<summary><strong>02 · Forward Propagation</strong></summary><br>
+<summary><strong>01 · With Batch Normalization, L2 regularization, Dropout</strong></summary>
+<br>
 
-At each layer, forward propagation computes:
-
-```python
-Z = np.dot(W, X) + b   # Weighted sum
-A = activation(Z)       # Apply activation
-```
-
-</details>
-
-<details>
-<summary><strong>03 · Weight & Bias Initialization</strong></summary><br>
-
-```python
-W = np.random.randn(n_out, n_in) * 0.01  # Break symmetry
-b = np.zeros((n_out, 1))                  # Zero biases
-```
-
-</details>
-
-<details>
-<summary><strong>04 · Activation Functions</strong></summary><br>
-
-| Function | Formula | Use Case |
-|----------|---------|----------|
-| ReLU | `max(0, z)` | Hidden layers |
-| Sigmoid | `1 / (1 + e⁻ᶻ)` | Binary output |
-| Softmax | `eᶻⁱ / Σeᶻ` | Multi-class |
-
-</details>
-
-<details>
-<summary><strong>05 · Deep vs Shallow Networks</strong></summary><br>
-
-- **Shallow**: 1 hidden layer — simpler, less expressive
-- **Deep**: 2+ hidden layers — hierarchical features, needs careful training
-
-</details>
-
-<details>
-<summary><strong>06 · Vectorized NumPy Operations</strong></summary><br>
-
-```python
-Z   = np.dot(W, X) + b       # Entire batch at once
-A   = np.maximum(0, Z)        # ReLU — no loops
-sig = 1 / (1 + np.exp(-Z))   # Sigmoid
-```
+**With Batch Normalization, L2 regularization, Dropout**
 
 </details>
 
@@ -168,8 +110,8 @@ Deep-Learning-And-Neural-Network/
 </a>
 </td></tr></table>
 
-Building at the intersection of machine learning, web development, and web3.
-Currently working on my technical skills.
+Building at the intersection of machine learning, web development, and agri-tech.
+Currently working on **KrishiMitra** (smart farming ML platform) and **ToyBill** (GST billing app).
 Member of the **Amity Coding Club**.
 
 ---
@@ -195,5 +137,5 @@ If this helped you understand deep learning fundamentals, drop a star!
 ---
 
 <div align="center">
-  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 23 Mar 2026 17:31 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mittal</a> · Amity University, Gwalior</sub>
+  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 23 Mar 2026 17:45 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mittal</a> · Amity University, Gwalior</sub>
 </div>
