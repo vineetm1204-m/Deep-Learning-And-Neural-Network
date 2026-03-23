@@ -7,7 +7,7 @@
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Colab](https://img.shields.io/badge/Google_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)
 ![Notebooks](https://img.shields.io/badge/Notebooks-3-00e5ff?style=for-the-badge)
-![Auto Updated](https://img.shields.io/badge/Auto_Updated-23_Mar_2026_17%3A45_UTC-blueviolet?style=for-the-badge)
+![Auto Updated](https://img.shields.io/badge/Auto_Updated-23_Mar_2026_17%3A57_UTC-blueviolet?style=for-the-badge)
 
 **A hands-on exploration of forward propagation, neural network architecture,**
 **and the mathematics that power modern AI — built from scratch.**
@@ -15,7 +15,7 @@
 [📓 Notebooks](#-notebooks) · [🔬 Concepts](#-concepts-covered) · [🚀 Get Started](#-getting-started) · [📂 Structure](#-repository-structure)
 
 > 🤖 _This README is **auto-generated** on every push via GitHub Actions._
-> Last updated: **23 Mar 2026 17:45 UTC**
+> Last updated: **23 Mar 2026 17:57 UTC**
 
 </div>
 
@@ -25,24 +25,23 @@
 
 | 📓 Notebooks | 🔬 Concepts | 🏷️ Topics | ⚡ Runtime |
 |:---:|:---:|:---:|:---:|
-| **3** | **1** | **12** | Jupyter / Colab |
+| **3** | **1** | **13** | Jupyter / Colab |
 
 ---
 
 ## 📓 Notebooks
 
 | # | Notebook | Description | Colab | Tags | Last Updated |
-|---|----------|-------------|:-----:|------|-------------|
-| 1 | [**Alzheimer Dataset Used**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import warn… | [![Open](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `data-preprocessing` `CNN` `convolution` `activation-functions` `loss-functions` `optimization` | 3 days ago |
-| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Deep learning notebook — open to explore. | [![Open](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | `forward-propagation` `deep-learning` `neural-network` `numpy` | 3 days ago |
-| 3 | [**Multi Output Neural Network Keras**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | Deep learning notebook — open to explore. | [![Open](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | `neural-network` `keras` `activation-functions` `tensorflow` | 20 minutes ago |
+|:---:|----------|-------------|:-----:|------|:---:|
+| 1 | [****Importing the dataset with Data Augmentation****](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | With Batch Normalization, L2 regularization, Dropout | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb) | `medical-imaging` `CNN` `data-preprocessing` `activation-functions` `loss-functions` `optimization` | 3 days ago |
+| 2 | [**Forward Propogation Neural Network And Deep Learning**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | Notebook covering Forward Propogation Neural Network And Deep Learning. | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/forward-propogation%20Neural%20Network%20and%20Deep%20Learning.ipynb) | `forward-propagation` `deep-learning` `neural-network` `numpy` | 3 days ago |
+| 3 | [**Multi Output Neural Network Keras**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | Notebook covering Multi Output Neural Network Keras. | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/multi-output-neural-network-keras.ipynb) | `neural-network` `multi-output` `keras` `activation-functions` `tensorflow` | 32 minutes ago |
 
 ---
 
 ## 🔬 Concepts Covered
 
-### 📓 From: [Alzheimer Dataset Used](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb)
+### 📓 [**Importing the dataset with Data Augmentation**](https://github.com/vineetm1204-m/Deep-Learning-And-Neural-Network/blob/main/alzheimer-dataset-used.ipynb)
 
 <details>
 <summary><strong>01 · With Batch Normalization, L2 regularization, Dropout</strong></summary>
@@ -60,6 +59,8 @@ import warn… | [![Open](https://colab.research.google.com/assets/colab-badge.s
 ![Jupyter](https://img.shields.io/badge/Jupyter_Notebook-F37626?style=flat-square&logo=jupyter&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=flat-square)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+![Keras](https://img.shields.io/badge/Keras-D00000?style=flat-square&logo=keras&logoColor=white)
 ![Colab](https://img.shields.io/badge/Google_Colab_Ready-F9AB00?style=flat-square&logo=googlecolab&logoColor=white)
 
 ---
@@ -74,7 +75,7 @@ cd Deep-Learning-And-Neural-Network
 
 **2. Install dependencies**
 ```bash
-pip install numpy matplotlib jupyter
+pip install numpy matplotlib jupyter tensorflow keras
 ```
 
 **3. Launch Jupyter**
@@ -82,7 +83,7 @@ pip install numpy matplotlib jupyter
 jupyter notebook
 ```
 
-**4. Or open directly in Colab** — click any badge in the [Notebooks](#-notebooks) section above.
+**4. Or open directly in Colab** — click any badge in the [Notebooks](#-notebooks) table above.
 
 ---
 
@@ -94,7 +95,7 @@ Deep-Learning-And-Neural-Network/
 ├── 📓 alzheimer-dataset-used.ipynb
 ├── 📓 forward-propogation Neural Network and Deep Learning.ipynb
 ├── 📓 multi-output-neural-network-keras.ipynb
-├── 📄 README.md  ← auto-generated
+├── 📄 README.md              ← auto-generated
 └── 📁 .github/workflows/update-readme.yml
 ```
 
@@ -120,11 +121,11 @@ Member of the **Amity Coding Club**.
 
 1. Fork the repository
 2. Create your branch: `git checkout -b feature/your-notebook`
-3. Add your `.ipynb` file
+3. Add your `.ipynb` file with `##` section headings
 4. Commit: `git commit -m 'Add: <topic> notebook'`
 5. Push & open a Pull Request
 
-> The README will **auto-update** to include your notebook on the next push! 🎉
+> The README will **auto-update** to include your notebook and its concepts on the next push! 🎉
 
 ---
 
@@ -137,5 +138,5 @@ If this helped you understand deep learning fundamentals, drop a star!
 ---
 
 <div align="center">
-  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 23 Mar 2026 17:45 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mittal</a> · Amity University, Gwalior</sub>
+  <sub>🤖 Auto-generated by <code>generate_readme.py</code> · 23 Mar 2026 17:57 UTC · <a href='https://github.com/vineetm1204-m'>Vineet Mittal</a> · Amity University, Gwalior</sub>
 </div>
