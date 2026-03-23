@@ -27,7 +27,7 @@ UNIVERSITY = "Amity University, Gwalior"
 # File types to scan
 NOTEBOOK_EXTS = {".ipynb"}
 SCRIPT_EXTS   = {".py"}
-IGNORE_DIRS   = {".git", ".github", ".venv", "__pycache__", "node_modules", ".ipynb_checkpoints"}
+IGNORE_DIRS   = {".git", ".github", "__pycache__", "node_modules", ".ipynb_checkpoints"}
 IGNORE_FILES  = {"generate_readme.py", "README.md"}
 
 # ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -96,6 +96,106 @@ def notebook_description(path: Path) -> str:
     except Exception:
         pass
     return "Deep learning notebook — open to explore."
+
+
+def extract_concepts(path: Path) -> list[dict]:
+    """
+    Extract concepts dynamically from a notebook by reading every cell.
+
+    Strategy:
+      - Every markdown H2 (##) or H3 (###) heading becomes a concept entry.
+      - The body of that concept is built from the cells that follow until
+        the next heading: markdown text is kept as-is, code cells are
+        wrapped in a fenced code block (language auto-detected from
+        the notebook kernel or first-line shebang / import).
+      - H1 (#) is treated as the notebook title, not a concept.
+      - If no headings exist at all, falls back to collecting all
+        top-level markdown bold lines (**text**) as lightweight concepts.
+    """
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            nb = json.load(f)
+    except Exception:
+        return []
+
+    # Detect kernel language for code fences
+    lang = (
+        nb.get("metadata", {})
+          .get("kernelspec", {})
+          .get("language", "python")
+    ) or "python"
+
+    cells = nb.get("cells", [])
+    concepts: list[dict] = []
+    current: dict | None = None
+
+    def flush():
+        if current and current.get("title"):
+            # Clean up trailing blank lines in body
+            body = "\n".join(current["body"]).rstrip()
+            concepts.append({"title": current["title"], "body": body})
+
+    for cell in cells:
+        ctype  = cell.get("cell_type", "")
+        source = "".join(cell.get("source", []))
+
+        if ctype == "markdown":
+            lines = source.splitlines()
+            i = 0
+            while i < len(lines):
+                line = lines[i].rstrip()
+
+                # H2 / H3 → new concept
+                if line.startswith("## ") or line.startswith("### "):
+                    flush()
+                    title = line.lstrip("#").strip()
+                    current = {"title": title, "body": []}
+                    # Collect remaining lines of THIS cell after the heading
+                    rest = lines[i + 1:]
+                    if rest:
+                        # Find next heading within same cell
+                        for j, rl in enumerate(rest):
+                            if rl.startswith("## ") or rl.startswith("### "):
+                                flush()
+                                title2 = rl.lstrip("#").strip()
+                                current = {"title": title2, "body": []}
+                                rest = rest[j + 1:]
+                                break
+                            else:
+                                if current:
+                                    current["body"].append(rl)
+                    break  # handled whole cell
+                else:
+                    # Lines before first heading in this cell → append to current concept
+                    if current and line:
+                        current["body"].append(line)
+                i += 1
+
+        elif ctype == "code":
+            if current is not None and source.strip():
+                # Limit code snippets to first 15 non-empty lines
+                code_lines = [l for l in source.splitlines() if l.strip()][:15]
+                snippet = "\n".join(code_lines)
+                current["body"].append(f"```{lang}")
+                current["body"].append(snippet)
+                current["body"].append("```")
+
+    flush()
+
+    # ── Fallback: no headings found → use bold lines as micro-concepts
+    if not concepts:
+        import re
+        for cell in cells:
+            if cell.get("cell_type") != "markdown":
+                continue
+            for line in "".join(cell.get("source", [])).splitlines():
+                m = re.match(r"^\*\*(.+?)\*\*", line.strip())
+                if m:
+                    concepts.append({"title": m.group(1), "body": line.strip()})
+            if len(concepts) >= 10:
+                break
+
+    return concepts
 
 
 def notebook_tags(path: Path) -> list[str]:
@@ -171,8 +271,9 @@ def scan_repo(root: Path) -> dict:
                 "tags":    notebook_tags(item),
                 "updated": git_log(str(rel)),
                 "commits": git_commit_count(str(rel)),
-                "url":     f"{REPO_URL}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
-                "colab":   f"https://colab.research.google.com/github/{REPO_OWNER}/{REPO_NAME}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
+                "url":      f"{REPO_URL}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
+                "colab":    f"https://colab.research.google.com/github/{REPO_OWNER}/{REPO_NAME}/blob/{BRANCH}/{str(rel).replace(' ', '%20')}",
+                "concepts": extract_concepts(item),
             })
 
         elif item.suffix in SCRIPT_EXTS:
@@ -192,8 +293,9 @@ def build_readme(data: dict) -> str:
     notebooks = data["notebooks"]
     scripts   = data["scripts"]
     now       = datetime.now(timezone.utc).strftime("%d %b %Y %H:%M UTC")
-    nb_count  = len(notebooks)
-    tag_count = len({t for nb in notebooks for t in nb["tags"]})
+    nb_count      = len(notebooks)
+    tag_count     = len({t for nb in notebooks for t in nb["tags"]})
+    concept_count = sum(len(nb.get("concepts", [])) for nb in notebooks)
 
     # ── HEADER
     lines = [
@@ -226,9 +328,9 @@ def build_readme(data: dict) -> str:
     lines += [
         "## 📊 At a Glance",
         "",
-        f"| 📓 Notebooks | 🏷️ Topics | 🌐 Language | ⚡ Runtime |",
+        f"| 📓 Notebooks | 🔬 Concepts | 🏷️ Topics | ⚡ Runtime |",
         f"|:---:|:---:|:---:|:---:|",
-        f"| **{nb_count}** | **{tag_count}** | Python 3 | Jupyter / Colab |",
+        f"| **{nb_count}** | **{concept_count}** | **{tag_count}** | Jupyter / Colab |",
         "",
         "---",
         "",
@@ -242,25 +344,15 @@ def build_readme(data: dict) -> str:
 
     if notebooks:
         lines += [
-            "| # | Notebook | Description | Tags | Last Updated |",
-            "|---|----------|-------------|------|-------------|",
+            "| # | Notebook | Description | Colab | Tags | Last Updated |",
+            "|---|----------|-------------|:-----:|------|-------------|",
         ]
         for i, nb in enumerate(notebooks, 1):
-            tags_str = " ".join(f"`{t}`" for t in nb["tags"]) if nb["tags"] else "—"
-            raw_desc = nb["desc"] or "Deep learning notebook — open to explore."
-            safe_desc = " ".join(raw_desc.split())  # collapse newlines/extra spaces to keep table layout intact
-            safe_desc = safe_desc.replace("|", "\\|")
-            desc = safe_desc[:90] + ("…" if len(safe_desc) > 90 else "")
+            tags_str  = " ".join(f"`{t}`" for t in nb["tags"]) if nb["tags"] else "—"
+            desc      = nb["desc"].replace("|", "\\|")[:80] + ("…" if len(nb["desc"]) > 80 else "")
+            colab_btn = f"[![Open](https://colab.research.google.com/assets/colab-badge.svg)]({nb['colab']})"
             lines.append(
-                f"| {i} | [**{nb['title']}**]({nb['url']}) | {desc} | {tags_str} | {nb['updated']} |"
-            )
-        lines.append("")
-
-        # Colab buttons
-        lines += ["### ▶️ Open in Google Colab", ""]
-        for nb in notebooks:
-            lines.append(
-                f"[![{nb['title']}](https://colab.research.google.com/assets/colab-badge.svg)]({nb['colab']}) `{nb['path']}`"
+                f"| {i} | [**{nb['title']}**]({nb['url']}) | {desc} | {colab_btn} | {tags_str} | {nb['updated']} |"
             )
         lines.append("")
     else:
@@ -268,76 +360,51 @@ def build_readme(data: dict) -> str:
 
     lines += ["---", ""]
 
-    # ── CONCEPTS ACCORDION (static but comprehensive)
-    lines += [
-        "## 🔬 Concepts Covered",
-        "",
-        "<details>",
-        "<summary><strong>01 · Neural Network Fundamentals</strong></summary><br>",
-        "",
-        "A neural network is a computational graph of interconnected nodes (neurons) arranged in layers.",
-        "",
-        "```",
-        "Input Layer → Hidden Layer(s) → Output Layer",
-        "```",
-        "",
-        "</details>",
-        "",
-        "<details>",
-        "<summary><strong>02 · Forward Propagation</strong></summary><br>",
-        "",
-        "At each layer, forward propagation computes:",
-        "",
-        "```python",
-        "Z = np.dot(W, X) + b   # Weighted sum",
-        "A = activation(Z)       # Apply activation",
-        "```",
-        "",
-        "</details>",
-        "",
-        "<details>",
-        "<summary><strong>03 · Weight & Bias Initialization</strong></summary><br>",
-        "",
-        "```python",
-        "W = np.random.randn(n_out, n_in) * 0.01  # Break symmetry",
-        "b = np.zeros((n_out, 1))                  # Zero biases",
-        "```",
-        "",
-        "</details>",
-        "",
-        "<details>",
-        "<summary><strong>04 · Activation Functions</strong></summary><br>",
-        "",
-        "| Function | Formula | Use Case |",
-        "|----------|---------|----------|",
-        "| ReLU | `max(0, z)` | Hidden layers |",
-        "| Sigmoid | `1 / (1 + e⁻ᶻ)` | Binary output |",
-        "| Softmax | `eᶻⁱ / Σeᶻ` | Multi-class |",
-        "",
-        "</details>",
-        "",
-        "<details>",
-        "<summary><strong>05 · Deep vs Shallow Networks</strong></summary><br>",
-        "",
-        "- **Shallow**: 1 hidden layer — simpler, less expressive",
-        "- **Deep**: 2+ hidden layers — hierarchical features, needs careful training",
-        "",
-        "</details>",
-        "",
-        "<details>",
-        "<summary><strong>06 · Vectorized NumPy Operations</strong></summary><br>",
-        "",
-        "```python",
-        "Z   = np.dot(W, X) + b       # Entire batch at once",
-        "A   = np.maximum(0, Z)        # ReLU — no loops",
-        "sig = 1 / (1 + np.exp(-Z))   # Sigmoid",
-        "```",
-        "",
-        "</details>",
-        "",
-        "---",
-        "",
-    ]
+    # ── CONCEPTS COVERED (dynamically extracted from notebook cells) ────────────
+    lines += ["## 🔬 Concepts Covered", ""]
+
+    # Gather all concepts across every notebook, grouped by notebook
+    all_concepts_found = False
+    for nb in notebooks:
+        concepts = nb.get("concepts", [])
+        if not concepts:
+            continue
+        all_concepts_found = True
+
+        # Show notebook source label only when there are multiple notebooks
+        if len(notebooks) > 1:
+            lines += [
+                f"### 📓 From: [{nb['title']}]({nb['url']})",
+                "",
+            ]
+
+        for idx, concept in enumerate(concepts, 1):
+            title = concept["title"]
+            body  = concept["body"]
+
+            lines += [
+                "<details>",
+                f"<summary><strong>{idx:02d} · {title}</strong></summary>",
+                "<br>",
+                "",
+            ]
+
+            if isinstance(body, list):
+                lines += body
+            else:
+                lines.append(str(body))
+
+            lines += ["", "</details>", ""]
+
+    if not all_concepts_found:
+        lines += [
+            "> 📭 No section headings found in notebooks yet.",
+            "> Add `##` headings inside your `.ipynb` markdown cells and they will",
+            "> automatically appear here as expandable concept entries on the next push.",
+            "",
+        ]
+
+    lines += ["---", ""]
 
     # ── TECH STACK
     lines += [
@@ -413,9 +480,9 @@ def build_readme(data: dict) -> str:
         "</a>",
         "</td></tr></table>",
         "",
-        "Building at the intersection of machine learning, web development, and web3.",
-        "Currently working on my technical skills.",
-        f"Member of the **Amity Coding Club**.",
+        "Building at the intersection of machine learning, web development, and agri-tech.",
+        "Currently working on **KrishiMitra** (smart farming ML platform) and **ToyBill** (GST billing app).",
+        "Member of the **Amity Coding Club**.",
         "",
         "---",
         "",
