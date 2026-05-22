@@ -129,11 +129,16 @@ Deep-Learning-And-Neural-Network/
 <a href="https://github.com/vineetm1204-m">
 <img src="https://img.shields.io/badge/GitHub-vineetm1204-m-181717?style=flat-square&logo=github" />
 </a>
+<a href="https://www.instagram.com/vineetm1204/">
+<img src="https://img.shields.io/badge/Instagram-@vineetm1204-E4405F?style=flat-square&logo=instagram&logoColor=white" />
+</a>
+<a href="https://www.linkedin.com/in/vineet-mittal-52b5901b3/">
+<img src="https://img.shields.io/badge/LinkedIn-Vineet%20Mittal-0A66C2?style=flat-square&logo=linkedin&logoColor=white" />
+</a>
 </td></tr></table>
 
 Building at the intersection of machine learning, web development, and web3.
 Currently working on my technical skills.
-Member of the **Amity Coding Club**.
 
 ---
 
